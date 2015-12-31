@@ -24,7 +24,7 @@ namespace :setup do
     on roles(:app) do
       # no need anymore: execute "rm -f /etc/nginx/sites-enabled/default"
 
-      execute "ln -nfs #{current_path}/config/nginx.conf /etc/nginx/servers/#{fetch(:application)}"
+      execute "ln -nfs #{current_path}/config/nginx.conf /usr/local/etc/nginx/servers/#{fetch(:application)}"
 
       execute "mkdir -p /usr/local/etc/thin"
       execute "ln -nfs #{current_path}/config/thin.yml /usr/local/etc/thin/algasense.yml"
