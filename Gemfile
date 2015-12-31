@@ -35,7 +35,6 @@ gem 'thin'
 # gem 'capistrano-rails', group: :development
 
 gem 'sidekiq'
-gem 'sidekiq'
 gem 'capistrano-sidekiq', git: 'https://github.com/seuros/capistrano-sidekiq.git'
 gem 'sinatra', :require => nil
 gem 'serialport'
