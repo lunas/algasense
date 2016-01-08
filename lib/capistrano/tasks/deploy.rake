@@ -9,6 +9,16 @@ namespace :deploy do
     end
   end
 
+
+  desc "Upload config/secrets.yml."
+  task :upload_secrets do
+    on roles(:app) do
+      upload! StringIO.new(File.read("config/secrets.yml")), "#{shared_path}/config/secrets.yml"
+    end
+  end
+
+
+
   %w[start stop restart].each do |command|
     desc "#{command} Thin server."
     task command do
@@ -20,6 +30,7 @@ namespace :deploy do
   end
 
   before :deploy,   "deploy:check_revision"
+  before :deploy, "deploy:upload_secrets"
   after  :deploy,   "deploy:restart"
   after  :rollback, "deploy:restart"
 

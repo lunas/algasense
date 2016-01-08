@@ -12,7 +12,8 @@ set :deploy_to, '/var/www/algasense'
 set :deploy_user, 'lukasnick'
 set :rbenv_ruby, '2.2.3'
 set :rbenv_type, :user # or :system, depends on your rbenv setup
-set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
+#set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
+set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} /usr/local/bin/rbenv exec"
 set :rbenv_map_bins, %w{rake gem bundle ruby rails}
 set :rbenv_roles, :all # default value
 
@@ -36,6 +37,7 @@ set :linked_dirs, fetch(:linked_dirs, []).push('bin', 'log', 'tmp/pids', 'tmp/ca
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
+set :default_env, { path: "~/.rbenv/shims:~/.rbenv/bin:/usr/local/bin:$PATH" }
 
 # Default value for keep_releases is 5
 set :keep_releases, 5
@@ -46,3 +48,10 @@ set :pty,  false
 set :sidekiq_options, {retry: false}
 set :sidekiq_monit_use_sudo, false
 
+
+
+# TODO
+# INFO [fbc6ce29] Running /usr/bin/env cd /var/www/algasense/releases/20160107220021; bundle exec thin restart as lukasnick@192.168.88.246
+# DEBUG [fbc6ce29] Command: cd /var/www/algasense/releases/20160107220021; bundle exec thin restart
+# DEBUG [fbc6ce29] 	bash: bundle: command not found
+# --> solution: use same path/prefix for bundle as when capistr. calls it.
