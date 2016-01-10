@@ -58,3 +58,9 @@ group :development, :test do
   gem 'spring'
 end
 
+
+group :test do
+  gem 'rspec-rails', '~> 3.0'
+  #gem 'spork-rails'
+  #gem 'guard-jruby-rspec'
+end

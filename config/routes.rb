@@ -1,4 +1,21 @@
 Rails.application.routes.draw do
+
+  ############## API ################
+
+  namespace :api do
+
+    get 'rgb'  => 'rgb#index',  defaults: {format: 'json'}
+    get 'temp' => 'temp#index', defaults: {format: 'json'}
+    get 'ph'   => 'ph#index',   defaults: {format: 'json'}
+
+    # scope :rgb, defaults: {format: 'json'} do
+    #   match '/' => 'rgb#index', via: :get
+    # end
+
+  end
+
+
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
