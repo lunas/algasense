@@ -7,7 +7,7 @@ require 'Logger'
 class SerialReader
 
   def self.read
-    @reader = SerialReader.new
+    @reader = DataSourceFactory.create
     @reader.read
   end
 
@@ -15,16 +15,13 @@ class SerialReader
     @reader.close_serial_port if @reader
   end
 
-  def initialize(logger = nil)
-    @port_str  = config[:port_str]
-    @baud_rate = config[:baud_rate]
-    @data_bits = 8
-    @stop_bits = 1
-    @parity    = SerialPort::NONE
-    @serial_port = SerialPort.new @port_str, @baud_rate, @data_bits, @stop_bits, @parity
-
+  # @param read_interval: Time to wait for the next reading of the sensor, in second
+  def initialize(read_interval, logger = nil)
+    @serial_port = DataSourceFactory.create
     @logger = logger ? logger : Logger.new( config[:logger] )
     @observers = []
+    @read_interval = read_interval
+    @last_read = Time.now
   end
 
 
@@ -34,7 +31,7 @@ class SerialReader
 
 
   def notify(data)
-    @observers.each {|obs| obs.update data }
+    @observers.each { |obs| obs.update data }
   end
 
 
@@ -43,8 +40,11 @@ class SerialReader
     begin
       while true do
         while (data = @serial_port.gets.chomp) do
-          notify data
-          @logger.info data
+          if time_ripe?
+            notify data
+            @logger.info data
+            @last_read = Time.now
+          end
         end
       end
     rescue StandardError => e
@@ -59,29 +59,19 @@ class SerialReader
     @serial_port.close
   end
 
-  private
 
-  def config
-    begin
-      {port_str:  Rails.configuration.x.port_str,
-       baud_rate: Rails.configuration.x.baud_rate,
-       logger:    Rails.configuration.x.serial_log_file
-      }
-    rescue StandardError
-      {port_str:  '/dev/tty.usbmodem1b11',
-       baud_rate: 38400,
-       logger:    File.join(File.dirname(__FILE__), '..', 'log', 'serial.log')
-      }
-    end
+  def time_ripe?
+    Time.now - @last_read > @read_interval
   end
+
 end
 
 
-Signal.trap("INT") {
-  SerialReader.shutdown
-}
-Signal.trap('TERM'){
-  SerialReader.shutdown
-}
-
-SerialReader.read
+# Signal.trap("INT") {
+#   SerialReader.shutdown
+# }
+# Signal.trap('TERM'){
+#   SerialReader.shutdown
+# }
+#
+# SerialReader.read
