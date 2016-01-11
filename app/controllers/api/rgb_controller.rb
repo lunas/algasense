@@ -2,6 +2,19 @@ module Api
 
   class RgbController < Api::BaseController
 
+    # /api/rgb?date=01.10.2015
+    # /api/rgb?from=01.10.2015&to=04.10.2015
+    # @returns {
+    #           data: [ {date: "01.10.2015",
+    #                   rgb: [[1,2,3],[4,5,6], ..., [100,222, 123]] },  # 24x
+    #                  {date: "02.10.2015",
+    #                   rgb: [ <24 rgb-arrays> ] },
+    #                   {date: "03.10.2015",}
+    #                    rgb: [ <24 rgb-arrays> ] },
+    #                   {date: "04.10.2015",}
+    #                    rgb: [ <24 rgb-arrays> ] },
+    #                ]
+    #           }
     def index
       begin
         from, to = get_request_params
@@ -31,7 +44,7 @@ module Api
           to_date   = Date.parse(to)
           [from_date, to_date]
         else
-          raise new ArgumentError("Missing from-date or to-date!")
+          raise ArgumentError.new("Missing from-date or to-date!")
         end
       end
     end
