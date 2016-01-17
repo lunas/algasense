@@ -1,0 +1,67 @@
+# README
+
+Collect sensor data in a database and provide an API to get this data.
+
+## API
+
+### Request RGB sensor data
+
+For a specific date:
+
+``/api/rgb?date=05.01.2016`
+
+Returns:
+
+```
+{ "from":"05.01.2016",
+   "to":"05.01.2016",
+   "data":[ {"day":"2016-01-05","rgb":[[121,142,159],[138,11,133],...]} ] # (24 x array of 3 rgb-values)
+}
+```
+
+For a range of days:
+`/api/rgb?from=05.01.2016&to=05.01.2016`
+
+Returns:
+
+```
+{ "from":"05.01.2016",
+   "to":"06.01.2016",
+   "data":[ {"day":"2016-01-05","rgb":[[121,142,159],[138,11,133],...]}, # (24 x array of 3 rgb-values)
+            {"day":"2016-01-06","rgb":[[123,222,111],[21,122,288],...]}   # (24 x array of 3 rgb-values)
+}
+```
+
+### Request temperature sensor data
+
+Not implemented yet.
+
+### Request PH sensor data
+
+Not implemented yet.
+
+
+## Install
+
+* Ruby version: 2.2.3
+* Rails version: 4.2
+* Postgresql version: 9.4
+* Redis
+* Webserver: Thin
+
+### How to run the test suite
+
+`rspec spec/features`
+
+### Services (job queues, cache servers, search engines, etc.)
+
+* Redis (for Sidekiq)
+* Sidekiq
+
+### Deployment instructions
+
+Deploy: `bundle exec cap production deploy`
+
+
+
+
