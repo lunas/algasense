@@ -3,18 +3,12 @@ module Api
   class RgbController < Api::BaseController
 
     # /api/rgb?date=01.10.2015
-    # /api/rgb?from=01.10.2015&to=04.10.2015
-    # @returns {
-    #           data: [ {date: "01.10.2015",
-    #                   rgb: [[1,2,3],[4,5,6], ..., [100,222, 123]] },  # 24x
-    #                  {date: "02.10.2015",
-    #                   rgb: [ <24 rgb-arrays> ] },
-    #                   {date: "03.10.2015",}
-    #                    rgb: [ <24 rgb-arrays> ] },
-    #                   {date: "04.10.2015",}
-    #                    rgb: [ <24 rgb-arrays> ] },
-    #                ]
-    #           }
+    # /api/rgb?from=04.01.2016&to=05.01.2016
+    # @returns { "from":"05.01.2016",
+    #            "to":"06.01.2016",
+    #            "data":[{"day":"2016-01-05","rgb":[[121,142,159],[138,11,133],...]}, # (24 x array of 3 rgb-values)
+    #                    {"day":"2016-01-06","rgb":[[123,222,111],[21,122,288],...]}   # (24 x array of 3 rgb-values)
+    #          }
     def index
       begin
         from, to = get_request_params
