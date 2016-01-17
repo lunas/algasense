@@ -60,10 +60,6 @@ RSpec.describe 'RGB API' do
     end
 
     describe 'Request with from and to date' do
-      let(:url) { "/api/rgb?from=#{from_date}&to=#{to_date}" }
-
-      let(:from_date) { 3.days.ago.strftime('%d.%m.%Y') }
-      let(:to_date)   { 2.days.ago.strftime('%d.%m.%Y') }
 
       before :each do
         FactoryGirl.create :rgb, created_at: 8.days.ago
@@ -74,25 +70,47 @@ RSpec.describe 'RGB API' do
         FactoryGirl.create :rgb, created_at: 1.days.ago
       end
 
-      it "returns the json with 'data' array for requested day" do
-        do_get
-        json = json_response
+      let(:url) { "/api/rgb?from=#{from_date}&to=#{to_date}" }
 
-        expect( Date.parse(json['from']) ).to eq Date.parse from_date
-        expect( Date.parse(json['to'])   ).to eq Date.parse to_date
+      context 'data available for requested time span' do
 
-        expect( json['data'].count ).to eq 2
-        expect( Date.parse(json['data'].first['day']) ).to eq Date.parse from_date
-        expect( Date.parse(json['data'].last['day'])  ).to eq Date.parse to_date
+        let(:from_date) { 3.days.ago.strftime('%d.%m.%Y') }
+        let(:to_date)   { 2.days.ago.strftime('%d.%m.%Y') }
 
-        expect( json['data'].first['rgb'].count ).to eq 2
-        expect( json['data'].first['rgb'] ).to match_array [@rgb1.to_arr, @rgb2.to_arr]
+        it "returns the json with 'data' array for requested day" do
+          do_get
+          json = json_response
 
-        expect( json['data'].last['rgb'].count ).to eq 2
-        expect( json['data'].last['rgb'] ).to match_array [@rgb3.to_arr, @rgb4.to_arr]
+          expect( Date.parse(json['from']) ).to eq Date.parse from_date
+          expect( Date.parse(json['to'])   ).to eq Date.parse to_date
 
+          expect( json['data'].count ).to eq 2
+          expect( Date.parse(json['data'].first['day']) ).to eq Date.parse from_date
+          expect( Date.parse(json['data'].last['day'])  ).to eq Date.parse to_date
+
+          expect( json['data'].first['rgb'].count ).to eq 2
+          expect( json['data'].first['rgb'] ).to match_array [@rgb1.to_arr, @rgb2.to_arr]
+
+          expect( json['data'].last['rgb'].count ).to eq 2
+          expect( json['data'].last['rgb'] ).to match_array [@rgb3.to_arr, @rgb4.to_arr]
+        end
       end
 
+      context 'no data available for requested time span' do
+
+        let(:from_date) { 30.days.ago.strftime('%d.%m.%Y') }
+        let(:to_date)   { 29.days.ago.strftime('%d.%m.%Y') }
+
+        it 'returns an empty array for the key "data"' do
+          do_get
+          json = json_response
+
+          expect( Date.parse(json['from']) ).to eq Date.parse from_date
+          expect( Date.parse(json['to'])   ).to eq Date.parse to_date
+
+          expect( json['data'] ).to eq []
+        end
+      end
     end
   end
 
