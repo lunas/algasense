@@ -6,7 +6,9 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-1.upto(3) do |day|
+Rgb.delete_all
+
+1.upto(6) do |day|
   0.upto(23) do |hour|
     (0..59).step(5) do |minute|
       t = Time.new(2016, 1, day, hour, minute, 0)

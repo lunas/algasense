@@ -24,7 +24,7 @@ RSpec.describe 'RGB API' do
           json = json_response
           expect( json['from'] ).to eq requested_date
           expect( json['to'] ).to eq requested_date
-          expect( json['rgb'] ).to eq []
+          expect( json['data'] ).to eq []
         end
       end
 
@@ -32,8 +32,8 @@ RSpec.describe 'RGB API' do
 
         before :each do
           FactoryGirl.create :rgb, created_at: 5.days.ago
-          @rgb1 = FactoryGirl.create :rgb, created_at: 3.days.ago
-          @rgb2 = FactoryGirl.create :rgb, created_at: 3.days.ago
+          @rgb1 = FactoryGirl.create :rgb, created_at: 74.hours.ago
+          @rgb2 = FactoryGirl.create :rgb, created_at: 77.hours.ago
           FactoryGirl.create :rgb, created_at: 1.days.ago
         end
 
@@ -42,8 +42,10 @@ RSpec.describe 'RGB API' do
         it "returns the json with 'data' array for requested day" do
           do_get
           json = json_response
-          expect( json['rgb'].count ).to eq 2
-          expect( json['rgb'] ).to match_array [@rgb1.to_arr, @rgb2.to_arr]
+          expect( json['data'].count ).to eq 1
+          expect( Date.parse(json['data'].first['day']) ).to eq Date.parse requested_date
+          expect( json['data'].first['rgb'].count ).to eq 2
+          expect( json['data'].first['rgb'] ).to match_array [@rgb1.to_arr, @rgb2.to_arr]
         end
       end
 

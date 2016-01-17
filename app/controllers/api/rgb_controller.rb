@@ -21,7 +21,7 @@ module Api
         data = Rgb.from_to(from, to)
         render json: { from: from.strftime('%d.%m.%Y'),
                        to:   to.strftime('%d.%m.%Y'),
-                       rgb:  data.map( &:to_arr) },
+                       data: data },
                status: 200
       rescue ArgumentError => e
         render json: { error: e.message }, status: 400 # bad request
