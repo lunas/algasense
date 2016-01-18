@@ -19,6 +19,10 @@ Returns:
 }
 ```
 
+Each day's rgb is an array of 24 arrays, each of which contains the three RGB values as integer.
+Each rgb-array corresponds to one hour: the first to 00:00 to 01:00, the last one to 23:00 to 00:00.
+These hourly values are an average of the sensor data over the hour.
+
 **For a range of days:**
 
 `/api/rgb?from=05.01.2016&to=05.01.2016`
