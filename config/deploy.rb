@@ -30,7 +30,7 @@ set :scm, :git
 # set :pty, true
 
 # Default value for :linked_files is []
-set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/secrets.yml')
+set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/secrets.yml', '.env')
 
 # Default value for linked_dirs is []
 set :linked_dirs, fetch(:linked_dirs, []).push('bin', 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system')
@@ -48,7 +48,7 @@ set :pty,  false
 set :sidekiq_options, {retry: false}
 set :sidekiq_monit_use_sudo, false
 
-
+after 'deploy:publishing', 'thin:restart'
 
 # TODO
 # INFO [fbc6ce29] Running /usr/bin/env cd /var/www/algasense/releases/20160107220021; bundle exec thin restart as lukasnick@192.168.88.246

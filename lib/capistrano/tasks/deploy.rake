@@ -18,20 +18,9 @@ namespace :deploy do
   end
 
 
-
-  %w[start stop restart].each do |command|
-    desc "#{command} Thin server."
-    task command do
-      on roles(:app) do
-        #execute "/etc/init.d/unicorn_#{fetch(:application)} #{command}"
-        execute "cd #{release_path}; bundle exec thin #{command}"
-      end
-    end
-  end
-
   before :deploy,   "deploy:check_revision"
-  before :deploy, "deploy:upload_secrets"
-  after  :deploy,   "deploy:restart"
-  after  :rollback, "deploy:restart"
+  before :deploy,   "deploy:upload_secrets"
+  after  :deploy,   "deploy:stop"
+  after  :rollback, "deploy:start"
 
 end

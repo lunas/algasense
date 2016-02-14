@@ -27,7 +27,7 @@ namespace :setup do
       execute "ln -nfs #{current_path}/config/nginx.conf /usr/local/etc/nginx/servers/#{fetch(:application)}"
 
       execute "mkdir -p /usr/local/etc/thin"
-      execute "ln -nfs #{current_path}/config/thin.yml /usr/local/etc/thin/algasense.yml"
+      execute "ln -nfs #{current_path}/config/production.yml /usr/local/etc/thin/algasense.yml"
       #execute "ln -nfs #{current_path}/config/unicorn_init.sh /etc/init.d/unicorn_#{fetch(:application)}"
     end
   end
