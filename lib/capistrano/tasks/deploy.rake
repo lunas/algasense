@@ -18,9 +18,41 @@ namespace :deploy do
   end
 
 
+  namespace :thin do
+
+    desc "Stop Thin"
+    task :stop do
+      on roles(:app) do
+        pidfile = "#{release_path}/tmp/pids/thin.pid"
+        if test("[ -f #{pidfile} ]")
+          execute "cd #{release_path}; bundle exec thin stop"
+        end
+      end
+    end
+
+
+    desc "Start Thin"
+    task :start do
+      on roles(:app) do
+        pid_file = "#{release_path}/tmp/pids/thin.pid"
+        if test("[ -f #{pid_file} ]")
+          raise "Refuse to start Thin, pidfile already exists: #{pid_file}."
+        else
+          config_file = "config/thin/#{fetch(:rails_env)}.yml"
+          execute "cd #{release_path}; bundle exec thin start -C #{config_file} -P #{pid_file}"
+        end
+      end
+    end
+
+  end
+
+
   before :deploy,   "deploy:check_revision"
   before :deploy,   "deploy:upload_secrets"
-  after  :deploy,   "deploy:stop"
-  after  :rollback, "deploy:start"
 
+  after  :deploy,   "deploy:thin:stop"
+  after  :deploy,   "deploy:thin:start"
+
+  after  :rollback, "deploy:thin:stop"
+  after  :rollback, "deploy:thin:start"
 end

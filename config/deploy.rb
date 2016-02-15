@@ -48,8 +48,6 @@ set :pty,  false
 set :sidekiq_options, {retry: false}
 set :sidekiq_monit_use_sudo, false
 
-after 'deploy:publishing', 'thin:restart'
-
 # TODO
 # INFO [fbc6ce29] Running /usr/bin/env cd /var/www/algasense/releases/20160107220021; bundle exec thin restart as lukasnick@192.168.88.246
 # DEBUG [fbc6ce29] Command: cd /var/www/algasense/releases/20160107220021; bundle exec thin restart

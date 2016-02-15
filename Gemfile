@@ -59,7 +59,6 @@ group :development do
   gem 'capistrano-bundler'
   gem 'capistrano-rbenv'
   gem 'capistrano-ssh-doctor', '~> 1.0'
-  gem 'capistrano-thin', '~> 1.2.0'
 end
 
 group :development, :test do
