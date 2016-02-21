@@ -25,7 +25,7 @@ namespace :deploy do
       on roles(:app) do
         pidfile = "#{release_path}/tmp/pids/thin.pid"
         if test("[ -f #{pidfile} ]")
-          execute "cd #{release_path}; bundle exec thin stop"
+          execute "cd #{release_path}; RBENV_ROOT=~/.rbenv RBENV_VERSION=2.2.3 /usr/local/bin/rbenv exec bundle exec thin stop"
         end
       end
     end
@@ -38,8 +38,8 @@ namespace :deploy do
         if test("[ -f #{pid_file} ]")
           raise "Refuse to start Thin, pidfile already exists: #{pid_file}."
         else
-          config_file = "config/thin/#{fetch(:rails_env)}.yml"
-          execute "cd #{release_path}; bundle exec thin start -C #{config_file} -P #{pid_file}"
+          config_file = "#{release_path}/config/thin/#{fetch(:rails_env)}.yml"
+          execute "cd #{release_path}; RBENV_ROOT=~/.rbenv RBENV_VERSION=2.2.3 /usr/local/bin/rbenv exec bundle exec thin start -C #{config_file} -P #{pid_file}"
         end
       end
     end
