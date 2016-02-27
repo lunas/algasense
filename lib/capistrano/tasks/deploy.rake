@@ -23,7 +23,7 @@ namespace :deploy do
     desc "Stop Thin"
     task :stop do
       on roles(:app) do
-        pidfile = "#{release_path}/tmp/pids/thin.pid"
+        pidfile = "#{release_path}/tmp/pids/thin*.pid"
         if test("[ -f #{pidfile} ]")
           execute "cd #{release_path}; RBENV_ROOT=~/.rbenv RBENV_VERSION=2.2.3 /usr/local/bin/rbenv exec bundle exec thin stop"
         end

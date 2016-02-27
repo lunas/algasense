@@ -3,7 +3,7 @@ user: lukasnick
 group: deployers
 chdir: /var/www/algasense/current
 environment: production
-port: 3000
+port: 3001
 timeout: 30
 log: log/thin.log
 pid: tmp/pids/thin.pid
