@@ -79,7 +79,7 @@ Rails.application.configure do
 
   # App specific configs
 
-  config.x.serial_log_file = File.join(Rails.root, 'log', 'serial_dev.log')
+  config.x.serial_log_file = File.join(Rails.root, 'log', 'serial_production.log')
   config.x.port_str = '/dev/tty.usbmodem1b11'
   config.x.baud_rate = 38400
 
