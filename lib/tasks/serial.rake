@@ -1,3 +1,5 @@
+require "#{Rails.root}/app/jobs/serial_job.rb"
+
 namespace :serial do
   desc 'Start SerialJob in Sidekqik; it will read data from the serial port and
         write it to the serial log file and update its observers.'
