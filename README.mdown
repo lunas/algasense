@@ -65,8 +65,9 @@ Not implemented yet.
 
 ### Deployment instructions
 
-Deploy: `bundle exec cap production deploy`
+Deploy:
 
-
+* `bundle exec cap production deploy`
+* start/restart Thin manually!
 
 

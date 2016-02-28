@@ -20,7 +20,7 @@ test:
 
 production:
   <<: *default
-  database: nedali
+  database: algasense_production
   host: localhost
   port: 5432
   user: <%= ENV['PRODUCTION_DB_USER'] %>
