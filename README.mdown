@@ -68,6 +68,8 @@ Not implemented yet.
 Deploy:
 
 * `bundle exec cap production deploy`
-* start/restart Thin manually!
+* start/restart Thin manually:
+  * kill existing Thin instance with `ps aux | grep thin` and `kill -9 <pid>`
+  * start Thin with `RBENV_ROOT=~/.rbenv RBENV_VERSION=2.2.3 /usr/local/bin/rbenv exec bundle exec thin start -C ./config/thin/production.yml`
 
 
