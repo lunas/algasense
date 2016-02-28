@@ -5,14 +5,14 @@ class SerialJob < ActiveJob::Base
 
 
   def perform
-    Sidekiq.logger.info( "Starting SerialReader")
+    Sidekiq.logger.info("Starting SerialReader")
     SerialReader.read
-    Sidekiq.logger.info( "SerialReader finished")
+    Sidekiq.logger.info("SerialReader finished")
   end
 
 
-  rescue_from(StandardError) do |error|
-    Sidekiq.logger.error error.message
-  end
+  # rescue_from(StandardError) do |error|
+  #   Sidekiq.logger.error error.message
+  # end
 
 end
