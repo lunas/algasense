@@ -1,7 +1,7 @@
 class DataSourceFactory
 
   def self.create
-    if Rails.test?
+    if Rails.env.test?
       FakeSerialPort.new
     else
       port_str  = config[:port_str]
@@ -15,14 +15,16 @@ class DataSourceFactory
   end
 
 
-  def config
+  def self.config
     conf_hash = {data_bits: 8, stop_bits: 1, parity: SerialPort::NONE}
     begin
       conf_hash.merge({
                           port_str:  Rails.configuration.x.port_str,
                           baud_rate: Rails.configuration.x.baud_rate,
                           logger:    Rails.configuration.x.serial_log_file,
-                          data_bits: 8, stop_bits: 1, parity: SerialPort::NONE
+                          data_bits: 8,
+                          stop_bits: 1,
+                          parity: SerialPort::NONE
                       })
     rescue StandardError
       # If this is called from outside Rails, use this config:

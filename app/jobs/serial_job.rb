@@ -1,3 +1,5 @@
+require "serial_reader"
+
 class SerialJob < ActiveJob::Base
   queue_as :serial_reader
 

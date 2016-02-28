@@ -1,4 +1,5 @@
 require "serialport"
+require "data_source_factory"
 require 'Logger'
 
 # Reads the data stream from the serial port (as configured in Rails.configuration),
